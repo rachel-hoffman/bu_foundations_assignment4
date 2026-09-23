@@ -53,16 +53,12 @@ float do_job(int rows1, int cols1, int cols2, int forever) {
     struct timespec t0, t1;
 
     // Set up matrix 1, 2, and result pointers
-    int matrix1[rows1 * cols1];
-    int matrix2[rows1 * cols2];
-    int matrix3[rows1 * cols2];
-
-    int* ptrMatrix1 = matrix1;
-    int* ptrMatrix2 = matrix2;
-    int* ptrMatrix3 = matrix3;
+    int* matrix1 = malloc(rows1 * cols1 * sizeof(int));
+    int* matrix2 = malloc(rows1 * cols2 * sizeof(int));
+    int* matrix3 = malloc(rows1 * cols2 * sizeof(int));
     // Generate matrices
-    generate_random_matrix(rows1, cols1, ptrMatrix1);
-    generate_random_matrix(rows1, cols2, ptrMatrix2);
+    generate_random_matrix(rows1, cols1, matrix1);
+    generate_random_matrix(cols1, cols2, matrix2);
     
     // Start timing
     timespec_get(&t0, TIME_UTC);
@@ -70,11 +66,11 @@ float do_job(int rows1, int cols1, int cols2, int forever) {
     // Multiply the matrices (infinitely, if forever = 1)
     switch (forever){
     case 0:
-        multiply_matrices(rows1, cols1, ptrMatrix1, rows1, cols2, ptrMatrix2, ptrMatrix3);
+        multiply_matrices(rows1, cols1, matrix1, cols1, cols2, matrix2, matrix3);
         break;
     case 1:
         while (true)
-            multiply_matrices(rows1, cols1, ptrMatrix1, rows1, cols2, ptrMatrix2, ptrMatrix3);
+            multiply_matrices(rows1, cols1, matrix1, cols1, cols2, matrix2, matrix3);
         break;
     default:
         printf("'Forever' value is invalid (expecting 0 or 1).");
