@@ -24,12 +24,12 @@ void multiply_matrices(int rows1, int cols1, int *matrix1,
                        int rows2, int cols2, int *matrix2,
                        int *result) {
     // Loop through matrix1's rows
-    for (int r = 0; r < cols1; r++){
+    for (int r = 0; r < rows1; r++){
         // Loop thorugh matrix2's columns
-        for (int c = 0; c < rows1; c++){
+        for (int c = 0; c < cols2; c++){
             for (int k = 0; k < cols1; k++){
                 // Multiply martix1's rows by matrix2's columns
-                result[r*cols2 + c] = matrix1[r*cols1 + k] * matrix2 [k*cols2 + c];
+                result[r*cols2 + c] += matrix1[r*cols1 + k] * matrix2 [k*cols2 + c];
             }
         }
     } 
@@ -55,7 +55,7 @@ float do_job(int rows1, int cols1, int cols2, int forever) {
     // Set up matrix 1, 2, and result pointers
     int* matrix1 = malloc(rows1 * cols1 * sizeof(int));
     int* matrix2 = malloc(rows1 * cols2 * sizeof(int));
-    int* matrix3 = malloc(rows1 * cols2 * sizeof(int));
+    int* matrix3 = calloc(rows1 * cols2, sizeof(int));
     // Generate matrices
     generate_random_matrix(rows1, cols1, matrix1);
     generate_random_matrix(cols1, cols2, matrix2);

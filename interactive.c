@@ -12,6 +12,28 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     
+    float averageTime = 0.0;
+
+    int jobs[10];
+    
+    char* token = strtok(argv[2], ",");
+
+    int size = 0;
+
+    while(token != NULL){
+        jobs[size] = atoi(token);
+        size++;
+        token = strtok(NULL, ",");
+    }
+
+    if(strcmp(argv[1], "FIFO"))
+        averageTime = FIFO(jobs, size);
+    else if(strcmp(argv[1], "SJF"))
+        averageTime = SJF(jobs, size);
+    else
+        printf("Invalid scheduler. Expected FIFO or SJF.");
+
+    printf("Average response time: %f seconds\n", averageTime);
 
     return 0;
 }
